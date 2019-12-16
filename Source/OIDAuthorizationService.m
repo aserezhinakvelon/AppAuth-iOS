@@ -120,7 +120,8 @@ NS_ASSUME_NONNULL_BEGIN
   return [[self class] URL:URL matchesRedirectionURL:_request.redirectURL];
 }
 
-- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
+- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL
+                                    ofPart:(PartOfUrl)part {
   // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
   if (![self shouldHandleURL:URL]) {
     return NO;
@@ -134,7 +135,12 @@ NS_ASSUME_NONNULL_BEGIN
                 format:@"%@", OIDOAuthExceptionInvalidAuthorizationFlow, nil];
   }
 
-  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:URL];
+  OIDURLQueryComponent *query;
+  if (part == Fragment) {
+    query = [[OIDURLQueryComponent alloc] initWithQueryString:URL.fragment];
+  } else {
+    query = [[OIDURLQueryComponent alloc] initWithURL:URL];
+  }
 
   NSError *error;
   OIDAuthorizationResponse *response = nil;
@@ -253,7 +259,8 @@ NS_ASSUME_NONNULL_BEGIN
                         matchesRedirectionURL:_request.postLogoutRedirectURL];
 }
 
-- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
+- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL
+                                    ofPart:(PartOfUrl)part {
   // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
   if (![self shouldHandleURL:URL]) {
     return NO;
@@ -268,7 +275,13 @@ NS_ASSUME_NONNULL_BEGIN
   NSError *error;
   OIDEndSessionResponse *response = nil;
 
-  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:URL];
+  OIDURLQueryComponent *query;
+  if (part == Fragment) {
+    query = [[OIDURLQueryComponent alloc] initWithQueryString:URL.fragment];
+  } else {
+    query = [[OIDURLQueryComponent alloc] initWithURL:URL];
+  }
+
   response = [[OIDEndSessionResponse alloc] initWithRequest:_request
                                                  parameters:query.dictionaryValue];
   

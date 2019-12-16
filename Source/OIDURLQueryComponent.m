@@ -85,6 +85,31 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
   return self;
 }
 
+- (nullable instancetype)initWithQueryString:(NSString *)queryString {
+  self = [self init];
+  if (self) {
+    NSString *query = queryString;
+    // As OAuth uses application/x-www-form-urlencoded encoding, interprets '+' as a space
+    // in addition to regular percent decoding. https://url.spec.whatwg.org/#urlencoded-parsing
+    query = [query stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+
+    NSArray<NSString *> *queryParts = [query componentsSeparatedByString:@"&"];
+    for (NSString *queryPart in queryParts) {
+      NSRange equalsRange = [queryPart rangeOfString:@"="];
+      if (equalsRange.location == NSNotFound) {
+        continue;
+      }
+      NSString *name = [queryPart substringToIndex:equalsRange.location];
+      name = name.stringByRemovingPercentEncoding;
+      NSString *value = [queryPart substringFromIndex:equalsRange.location + equalsRange.length];
+      value = value.stringByRemovingPercentEncoding;
+      [self addParameter:name value:value];
+    }
+    return self;
+  }
+  return self;
+}
+
 - (NSArray<NSString *> *)parameters {
   return _parameters.allKeys;
 }

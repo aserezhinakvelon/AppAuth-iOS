@@ -16,6 +16,11 @@
         limitations under the License.
  */
 
+typedef NS_ENUM(NSInteger, PartOfUrl) {
+  Query,
+  Fragment
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Represents an in-flight external user-agent session.
@@ -51,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
     @remarks Has no effect if called more than once, or after a @c cancel message was received.
     @return YES if the passed URL matches the expected redirect URL and was consumed, NO otherwise.
  */
-- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL;
+- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL ofPart:(PartOfUrl)part;
 
 /*! @brief @c OIDExternalUserAgent or clients should call this method when the
         external user-agent flow failed with a non-OAuth error.

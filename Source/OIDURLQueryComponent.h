@@ -55,6 +55,11 @@ extern BOOL gOIDURLQueryComponentForceIOS7Handling;
  */
 - (nullable instancetype)initWithURL:(NSURL *)URL;
 
+/*! @brief Creates an @c OIDURLQueryComponent by parsing the query string.
+   @param queryString The query string.
+*/
+- (nullable instancetype)initWithQueryString:(NSString *)queryString;
+
 /*! @brief The value (or values) for a named parameter in the query.
     @param parameter The parameter name. Case sensitive.
     @return The value (or values) for a named parameter in the query.

@@ -39,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDExternalUserAgentIOS {
   UIViewController *_presentingViewController;
+  PartOfUrl _urlPart;
 
   BOOL _externalUserAgentFlowInProgress;
   __weak id<OIDExternalUserAgentSession> _session;
@@ -65,9 +66,15 @@ NS_ASSUME_NONNULL_BEGIN
     NSAssert(presentingViewController != nil,
              @"presentingViewController cannot be nil on iOS 13");
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
-    
+    _urlPart = query;
     _presentingViewController = presentingViewController;
   }
+  return self;
+}
+- (nullable instancetype)initWithPresentingViewController:(UIViewController *)presentingViewController
+                                                partOfUrl: (PartOfUrl) part {
+  self = [self initWithPresentingViewController:presentingViewController];
+  _urlPart = part;
   return self;
 }
 
@@ -100,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
         strongSelf->_webAuthenticationVC = nil;
         if (callbackURL) {
-          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL ofPart:query];
+          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL ofPart:self->_urlPart];
         } else {
           NSError *safariError =
               [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
@@ -135,7 +142,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
         strongSelf->_authenticationVC = nil;
         if (callbackURL) {
-          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL ofPart:query];
+          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL ofPart:self->_urlPart];
         } else {
           NSError *safariError =
               [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow

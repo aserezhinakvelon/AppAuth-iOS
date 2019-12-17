@@ -17,7 +17,7 @@
  */
 
 #import <UIKit/UIKit.h>
-
+#import "OIDExternalUserAgentSession.h"
 #import "OIDExternalUserAgent.h"
 
 @class SFSafariViewController;
@@ -41,6 +41,9 @@ API_UNAVAILABLE(macCatalyst)
 - (nullable instancetype)initWithPresentingViewController:
     (UIViewController *)presentingViewController
     NS_DESIGNATED_INITIALIZER;
+
+- (nullable instancetype)initWithPresentingViewController: (UIViewController *)presentingViewController
+                                                partOfUrl: (PartOfUrl) part;
 
 @end
 

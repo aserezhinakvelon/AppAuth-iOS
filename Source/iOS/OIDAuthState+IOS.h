@@ -17,7 +17,7 @@
  */
 
 #import <UIKit/UIKit.h>
-
+#import "OIDExternalUserAgentSession.h"
 #import "OIDAuthState.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -45,6 +45,11 @@ NS_ASSUME_NONNULL_BEGIN
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
                                      callback:(OIDAuthStateAuthorizationCallback)callback;
++ (id<OIDExternalUserAgentSession>)
+    hybridAuthStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
+                           presentingViewController:(UIViewController *)presentingViewController
+                                          partOfURL:(PartOfUrl) part
+                                           callback:(OIDAuthStateAuthorizationCallback)callback;
 
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest

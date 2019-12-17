@@ -136,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   OIDURLQueryComponent *query;
-  if (part == Fragment) {
+  if (part == fragment) {
     query = [[OIDURLQueryComponent alloc] initWithQueryString:URL.fragment];
   } else {
     query = [[OIDURLQueryComponent alloc] initWithURL:URL];
@@ -276,7 +276,7 @@ NS_ASSUME_NONNULL_BEGIN
   OIDEndSessionResponse *response = nil;
 
   OIDURLQueryComponent *query;
-  if (part == Fragment) {
+  if (part == fragment) {
     query = [[OIDURLQueryComponent alloc] initWithQueryString:URL.fragment];
   } else {
     query = [[OIDURLQueryComponent alloc] initWithURL:URL];

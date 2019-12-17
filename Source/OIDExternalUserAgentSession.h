@@ -17,8 +17,8 @@
  */
 
 typedef NS_ENUM(NSInteger, PartOfUrl) {
-  Query,
-  Fragment
+  query,
+  fragment
 };
 
 NS_ASSUME_NONNULL_BEGIN

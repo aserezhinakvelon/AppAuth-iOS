@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
         strongSelf->_webAuthenticationVC = nil;
         if (callbackURL) {
-          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL ofPart:Query];
+          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL ofPart:query];
         } else {
           NSError *safariError =
               [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
@@ -135,7 +135,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
         strongSelf->_authenticationVC = nil;
         if (callbackURL) {
-          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL ofPart:Query];
+          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL ofPart:query];
         } else {
           NSError *safariError =
               [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow

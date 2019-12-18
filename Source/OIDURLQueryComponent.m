@@ -58,12 +58,30 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
         for (NSURLQueryItem *queryItem in queryItems) {
           [self addParameter:queryItem.name value:queryItem.value];
         }
-        return self;
+      }
+    } else {
+      // Fallback for iOS 7
+      NSDictionary *query = [self parseQueryString:URL.query];
+
+      for (NSString *key in query) {
+        [self addParameter:key value:query[key]];
       }
     }
-    
-    // Fallback for iOS 7
-    NSString *query = URL.query;
+
+    NSDictionary *fragment = [self parseQueryString:URL.fragment];
+    for (NSString *key in fragment) {
+      [self addParameter:key value:fragment[key]];
+    }
+
+    return self;
+  }
+  return self;
+}
+
+- (NSDictionary *)parseQueryString:(nullable NSString *)queryString {
+  NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+  if (queryString) {
+    NSString *query = queryString;
     // As OAuth uses application/x-www-form-urlencoded encoding, interprets '+' as a space
     // in addition to regular percent decoding. https://url.spec.whatwg.org/#urlencoded-parsing
     query = [query stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
@@ -78,11 +96,10 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
       name = name.stringByRemovingPercentEncoding;
       NSString *value = [queryPart substringFromIndex:equalsRange.location + equalsRange.length];
       value = value.stringByRemovingPercentEncoding;
-      [self addParameter:name value:value];
+      dictionary[name] = value;
     }
-    return self;
   }
-  return self;
+  return dictionary;
 }
 
 - (NSArray<NSString *> *)parameters {

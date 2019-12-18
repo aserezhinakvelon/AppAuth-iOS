@@ -58,36 +58,29 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
         for (NSURLQueryItem *queryItem in queryItems) {
           [self addParameter:queryItem.name value:queryItem.value];
         }
-        return self;
       }
-    }
-    
-    // Fallback for iOS 7
-    NSString *query = URL.query;
-    // As OAuth uses application/x-www-form-urlencoded encoding, interprets '+' as a space
-    // in addition to regular percent decoding. https://url.spec.whatwg.org/#urlencoded-parsing
-    query = [query stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+    } else {
+      // Fallback for iOS 7
+      NSDictionary *query = [self parseQueryString:URL.query];
 
-    NSArray<NSString *> *queryParts = [query componentsSeparatedByString:@"&"];
-    for (NSString *queryPart in queryParts) {
-      NSRange equalsRange = [queryPart rangeOfString:@"="];
-      if (equalsRange.location == NSNotFound) {
-        continue;
+      for (NSString *key in query) {
+        [self addParameter:key value:query[key]];
       }
-      NSString *name = [queryPart substringToIndex:equalsRange.location];
-      name = name.stringByRemovingPercentEncoding;
-      NSString *value = [queryPart substringFromIndex:equalsRange.location + equalsRange.length];
-      value = value.stringByRemovingPercentEncoding;
-      [self addParameter:name value:value];
     }
+
+    NSDictionary *fragment = [self parseQueryString:URL.fragment];
+    for (NSString *key in fragment) {
+      [self addParameter:key value:fragment[key]];
+    }
+
     return self;
   }
   return self;
 }
 
-- (nullable instancetype)initWithQueryString:(NSString *)queryString {
-  self = [self init];
-  if (self) {
+- (NSDictionary *)parseQueryString:(nullable NSString *)queryString {
+  NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+  if (queryString) {
     NSString *query = queryString;
     // As OAuth uses application/x-www-form-urlencoded encoding, interprets '+' as a space
     // in addition to regular percent decoding. https://url.spec.whatwg.org/#urlencoded-parsing
@@ -103,11 +96,10 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
       name = name.stringByRemovingPercentEncoding;
       NSString *value = [queryPart substringFromIndex:equalsRange.location + equalsRange.length];
       value = value.stringByRemovingPercentEncoding;
-      [self addParameter:name value:value];
+      dictionary[name] = value;
     }
-    return self;
   }
-  return self;
+  return dictionary;
 }
 
 - (NSArray<NSString *> *)parameters {

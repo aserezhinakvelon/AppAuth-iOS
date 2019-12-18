@@ -39,23 +39,6 @@
                                                 callback:callback];
 }
 
-+ (id<OIDExternalUserAgentSession>)
-    hybridAuthStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
-                           presentingViewController:(UIViewController *)presentingViewController
-                                          partOfURL:(PartOfUrl) part
-                                           callback:(OIDAuthStateAuthorizationCallback)callback {
-  id<OIDExternalUserAgent> externalUserAgent;
-#if TARGET_OS_MACCATALYST
-  externalUserAgent = [[OIDExternalUserAgentCatalyst alloc] initWithPresentingViewController:presentingViewController];
-#else // TARGET_OS_MACCATALYST
-  externalUserAgent = [[OIDExternalUserAgentIOS alloc] initWithPresentingViewController:presentingViewController
-                                                                              partOfUrl:part];
-#endif // TARGET_OS_MACCATALYST
-  return [self authStateByPresentingAuthorizationRequest:authorizationRequest
-                                       externalUserAgent:externalUserAgent
-                                                callback:callback];
-}
-
 #if !TARGET_OS_MACCATALYST
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest

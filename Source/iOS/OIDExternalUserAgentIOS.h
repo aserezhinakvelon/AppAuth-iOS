@@ -42,9 +42,6 @@ API_UNAVAILABLE(macCatalyst)
     (UIViewController *)presentingViewController
     NS_DESIGNATED_INITIALIZER;
 
-- (nullable instancetype)initWithPresentingViewController: (UIViewController *)presentingViewController
-                                                partOfUrl: (PartOfUrl) part;
-
 @end
 
 NS_ASSUME_NONNULL_END

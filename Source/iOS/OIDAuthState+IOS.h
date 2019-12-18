@@ -17,7 +17,7 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "OIDExternalUserAgentSession.h"
+
 #import "OIDAuthState.h"
 
 NS_ASSUME_NONNULL_BEGIN

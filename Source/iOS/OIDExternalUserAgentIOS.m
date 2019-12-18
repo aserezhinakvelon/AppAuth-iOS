@@ -65,6 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSAssert(presentingViewController != nil,
              @"presentingViewController cannot be nil on iOS 13");
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
+    
     _presentingViewController = presentingViewController;
   }
   return self;

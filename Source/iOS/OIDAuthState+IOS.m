@@ -19,7 +19,6 @@
 #import "OIDAuthState+IOS.h"
 #import "OIDExternalUserAgentIOS.h"
 #import "OIDExternalUserAgentCatalyst.h"
-#import "OIDExternalUserAgentSession.h"
 
 @implementation OIDAuthState (IOS)
 

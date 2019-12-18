@@ -267,8 +267,8 @@ NS_ASSUME_NONNULL_BEGIN
   
   NSError *error;
   OIDEndSessionResponse *response = nil;
-  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:URL];
 
+  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:URL];
   response = [[OIDEndSessionResponse alloc] initWithRequest:_request
                                                  parameters:query.dictionaryValue];
   
